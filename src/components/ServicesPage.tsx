@@ -267,91 +267,97 @@ const ServicesPage = () => {
             />
 
             {/* sliding panel */}
-            <motion.aside
-              key="panel"
-              className="fixed inset-0 z-[100] md:hidden"
-              variants={panelVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              {/* use the mobile image as a cover for the panel */}
-            <div
-  className="bg-cover bg-center"
-  style={{ backgroundImage: `url(${mobile})`, height: "100dvh" }}
+          <motion.aside
+  key="panel"
+  className="fixed inset-0 z-[100] md:hidden"
+  variants={panelVariants}
+  initial="hidden"
+  animate="visible"
+  exit="exit"
 >
-  <div className="flex flex-col min-h-screen pt-1 pb-6">
-    {/* header row */}
-    <div className="flex items-center justify-between pl-4 pr-4">
-      <img src={logo2} className="w-[5rem] object-contain" alt="Logo" />
-
-      <motion.button
-        onClick={() => setShowMobileNav(false)}
-        className="text-white hover:text-red-500 p-2"
-        aria-label="Close menu"
-        whileTap={{ scale: 0.92, rotate: 6 }}
-      >
-        <X size={32} className="block" />
-      </motion.button>
-    </div>
-
-    {/* nav items (staggered) */}
-    <motion.nav
-      className="flex-1 flex flex-col justify-start px-8 gap-y-3 mt-6"
-      variants={listContainer}
-      initial="hidden"
-      animate="visible"
-    >
-      {navigationItems.map((item, idx) => (
-        <motion.div
-          key={idx}
-          className="flex items-center w-full max-w-full py-3"
-          variants={listItem}
-        >
-          <a
-            href={item.href}
-            onClick={() => setShowMobileNav(false)}
-            className={`flex-1 text-left text-lg font-medium transition-colors ${
-              item.active
-                ? "text-red-500"
-                : "text-white hover:text-red-300"
-            }`}
-          >
-            {item.name}
-          </a>
-
-          <motion.img
-            src={item.active ? selected : nonselected}
-            alt=""
-            className="w-6 h-6 ml-4"
-            initial={{ scale: 0.9, opacity: 0.6 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.18 }}
-          />
-        </motion.div>
-      ))}
-    </motion.nav>
-
-    {/* bottom CTA */}
-   <div className="px-6 mt-auto" style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 1rem)" }}>
-  <a
-    href="https://quotation.bim.africa/"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block w-full"
+  {/* use the mobile image as a cover for the panel */}
+  <div
+    className="bg-cover bg-center relative"
+    style={{
+      backgroundImage: `url(${mobile})`,
+      // prefer svh when available, but keep vh fallback for older browsers
+      minHeight: "100svh",
+      height: "100vh",
+    }}
   >
-    <motion.button
-      whileTap={{ scale: 0.98 }}
-      className="w-full bg-[#ff1f00] hover:bg-red-600 text-white py-4 rounded-full text-lg font-medium inline-block text-center transition-colors"
-    >
-      {language === "EN" ? "Instant Quotation" : "Devis Instantané"}
-    </motion.button>
-  </a>
-</div>
-  </div>
-</div>
+    <div className="flex flex-col min-h-full pt-1 pb-6" style={{ position: "relative" }}>
+      {/* header row */}
+      <div className="flex items-center justify-between pl-4 pr-4">
+        <img src={logo2} className="w-[5rem] object-contain" alt="Logo" />
 
-            </motion.aside>
+        <motion.button
+          onClick={() => setShowMobileNav(false)}
+          className="text-white hover:text-red-500 p-2"
+          aria-label="Close menu"
+          whileTap={{ scale: 0.92, rotate: 6 }}
+        >
+          <X size={32} className="block" />
+        </motion.button>
+      </div>
+
+      {/* nav items (staggered) */}
+      <motion.nav
+        className="flex-1 flex flex-col justify-start px-8 gap-y-3 mt-6 overflow-auto"
+        variants={listContainer}
+        initial="hidden"
+        animate="visible"
+      >
+        {navigationItems.map((item, idx) => (
+          <motion.div
+            key={idx}
+            className="flex items-center w-full max-w-full py-3"
+            variants={listItem}
+          >
+            <a
+              href={item.href}
+              onClick={() => setShowMobileNav(false)}
+              className={`flex-1 text-left text-lg font-medium transition-colors ${
+                item.active ? "text-red-500" : "text-white hover:text-red-300"
+              }`}
+            >
+              {item.name}
+            </a>
+
+            <motion.img
+              src={item.active ? selected : nonselected}
+              alt=""
+              className="w-6 h-6 ml-4 flex-shrink-0"
+              initial={{ scale: 0.9, opacity: 0.6 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.18 }}
+            />
+          </motion.div>
+        ))}
+      </motion.nav>
+
+      {/* bottom CTA - absolutely positioned so it stays visible above OS UI */}
+      <div
+        className="absolute left-0 right-0 bottom-8 px-6"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 1rem) + 0.75rem)", pointerEvents: "auto" }}
+      >
+        <a
+          href="https://quotation.bim.africa/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full"
+        >
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-[#ff1f00] hover:bg-red-600 text-white py-4 rounded-full text-lg font-medium inline-block text-center transition-colors"
+          >
+            {language === "EN" ? "Instant Quotation" : "Devis Instantané"}
+          </motion.button>
+        </a>
+      </div>
+    </div>
+  </div>
+</motion.aside>
+
           </>
         )}
       </AnimatePresence>
