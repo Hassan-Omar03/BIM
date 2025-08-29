@@ -281,8 +281,8 @@ const ServicesPage = () => {
     style={{
       backgroundImage: `url(${mobile})`,
       // prefer svh when available, but keep vh fallback for older browsers
-      minHeight: "100svh",
-      height: "100vh",
+      minHeight: "90vh",
+      height: "90vh",
     }}
   >
     <div className="flex flex-col min-h-full pt-1 pb-6" style={{ position: "relative" }}>
